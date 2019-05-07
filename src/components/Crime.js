@@ -3,7 +3,8 @@ import {getCrimeCategory, getForce, getCrime} from '../api/api'
 import InputPage from "./input"
 import NavbarPage from "./navbar"
 import {MDBContainer, MDBRow, MDBCol} from "mdbreact"
-import {MDBInput} from "mdbreact";
+import {MDBInput} from "mdbreact"; 
+import {BasicTable} from "../components/table.js"
 
 export default class Crime extends React.Component {
     constructor() {
@@ -32,16 +33,20 @@ export default class Crime extends React.Component {
         this.setState({
             [e.target.name]: e.target.value
         })
-        this.fetchCrimeData()
+    }
+    
+    requestCrimeData(){
+        this.fetchCrimeData();   
     }
     
     async fetchCrimeData() {
         const {crimeCategorySelect, forceSelect} = this.state
         console.log("crime select ====>>",crimeCategorySelect)
         console.log("force select ====>>",forceSelect)
-        // console.log(crimeCategorySelect, forceSelect)
         if (crimeCategorySelect !== "" && forceSelect !== "") {
             this.setState({crime: await getCrime(crimeCategorySelect, forceSelect)})
+        } else{
+            alert("please select both options")
         }
     }
 
@@ -70,7 +75,10 @@ export default class Crime extends React.Component {
                                 return <option value={item.id}>{item.name}</option>
                             })
                         } </select>}
-                        <button type="button" class="btn btn-primary">Search</button>
+                        <button onClick={this.requestCrimeData.bind(this)} type="button" class="btn btn-primary">Search</button>
+                    </div>
+                    <div>
+                        
                     </div>
                 </MDBContainer>
             </div>
