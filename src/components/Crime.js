@@ -4,7 +4,6 @@ import InputPage from "./input"
 import NavbarPage from "./navbar"
 import {MDBContainer, MDBRow, MDBCol} from "mdbreact"
 import {MDBInput} from "mdbreact"; 
-import {BasicTable} from "../components/table.js"
 
 export default class Crime extends React.Component {
     constructor() {
@@ -77,8 +76,29 @@ export default class Crime extends React.Component {
                         } </select>}
                         <button onClick={this.requestCrimeData.bind(this)} type="button" class="btn btn-primary">Search</button>
                     </div>
-                    <div>
-                        
+                    <div className="mt-4">
+                        <table className="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>CATEGORY</th>
+                                    <th>OUTCOME</th>
+                                    <th>MONTH</th>
+                                </tr>   
+                            </thead>
+                            <tbody>
+                                    {crime &&
+                                        crime.map((item) => {
+                                           return  (
+                                          <tr>     
+                                            <td>{item.category}</td>
+                                            <td>{item.outcome_status.category}</td>
+                                            <td>{item.month}</td>
+                                          </tr>
+                                           )
+                                        })
+                                    }
+                            </tbody>
+                        </table>
                     </div>
                 </MDBContainer>
             </div>
