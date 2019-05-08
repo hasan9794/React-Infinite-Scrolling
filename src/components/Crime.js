@@ -16,7 +16,8 @@ export default class Crime extends React.Component {
             force: [],
             crime: [],
             crimeCategorySelect: '',
-            forceSelect: ''
+            forceSelect: '',
+            limit: 7
         }
     }
 
@@ -24,8 +25,22 @@ export default class Crime extends React.Component {
         this.fetchData()
     }
 
+
+
     async fetchData() {
         this.setState({loading: true, crimeCategory: await getCrimeCategory(), force: await getForce()})
+    }
+
+    onScroll(e){
+        if(e.target.scrollHeight === Math.ceil(e.target.clientHeight + e.target.scrollTop)) {
+            this.loadMore();
+        }
+    }
+
+    loadMore(){
+        this.setState({
+            limit: this.state.limit + 7 
+        })
     }
 
     getSelectBoxValues(e) {
@@ -40,8 +55,6 @@ export default class Crime extends React.Component {
     
     async fetchCrimeData() {
         const {crimeCategorySelect, forceSelect} = this.state
-        console.log("crime select ====>>",crimeCategorySelect)
-        console.log("force select ====>>",forceSelect)
         if (crimeCategorySelect !== "" && forceSelect !== "") {
             this.setState({crime: await getCrime(crimeCategorySelect, forceSelect)})
         } else{
@@ -50,8 +63,9 @@ export default class Crime extends React.Component {
     }
 
     render() {
-        const {crimeCategory, force, crime} = this.state;
-        console.log("Crime =>>>>>" ,crime)
+        const {crimeCategory, force, crime, limit} = this.state;
+        const temp = [...crime]
+        temp.length = limit;
 
         return (
             <div>
@@ -76,7 +90,7 @@ export default class Crime extends React.Component {
                         } </select>}
                         <button onClick={this.requestCrimeData.bind(this)} type="button" class="btn btn-primary">Search</button>
                     </div>
-                    <div className="mt-4">
+                    <div onScroll={this.onScroll.bind(this)} className="mt-4" style={{height: 300, overflow: 'scroll'}}>
                         <table className="table table-hover">
                             <thead>
                                 <tr>
@@ -87,7 +101,7 @@ export default class Crime extends React.Component {
                             </thead>
                             <tbody>
                                     {crime &&
-                                        crime.map((item) => {
+                                        temp.map((item) => {
                                            return  (
                                           <tr>     
                                             <td>{item.category}</td>
