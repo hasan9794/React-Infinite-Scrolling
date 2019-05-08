@@ -50,6 +50,9 @@ export default class Crime extends React.Component {
     }
     
     requestCrimeData(){
+        this.setState({
+            limit: 7   
+        })
         this.fetchCrimeData();   
     }
     

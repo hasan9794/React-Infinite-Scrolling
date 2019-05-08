@@ -27,9 +27,8 @@ function ButtonAppBar(props) {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          
           <Typography variant="h6" color="inherit" className={classes.grow}>
-            News
+            Crime API
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>
